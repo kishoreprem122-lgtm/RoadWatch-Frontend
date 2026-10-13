@@ -1,0 +1,30 @@
+
+.report-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  background: white;
+  color: #222;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.report-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.report-container input,
+.report-container select,
+.report-container button {
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.report-container button {
+  cursor: pointer;
+  background: #176b4d;
+  color: white;
+  border: none;
+}
