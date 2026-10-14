@@ -6,11 +6,38 @@ import Reports from "./Reports.jsx";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 
+function getStoredUser() {
+  try {
+    const stored = sessionStorage.getItem("roadwatchUser");
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function App() {
   const [page, setPage] = useState("home");
+  const [user, setUser] = useState(getStoredUser);
+
+  function handleLoginSuccess(userData) {
+    setUser(userData);
+    setPage("home");
+  }
+
+  function handleLogout() {
+    sessionStorage.removeItem("roadwatchToken");
+    sessionStorage.removeItem("roadwatchUser");
+    setUser(null);
+    setPage("home");
+  }
 
   if (page === "login") {
-    return <Login onBack={() => setPage("home")} />;
+    return (
+      <Login
+        onBack={() => setPage("home")}
+        onLoginSuccess={handleLoginSuccess}
+      />
+    );
   }
 
   if (page === "register") {
@@ -38,8 +65,17 @@ export default function App() {
         <div className="nav-links">
           <button onClick={() => setPage("home")}>Home</button>
           <button onClick={() => setPage("reports")}>Reports</button>
-          <button onClick={() => setPage("login")}>Login</button>
-          <button onClick={() => setPage("register")}>Register</button>
+          {user ? (
+            <>
+              <span className="user-greeting">👤 {user.name}</span>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => setPage("login")}>Login</button>
+              <button onClick={() => setPage("register")}>Register</button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -84,7 +120,4 @@ export default function App() {
     </div>
   );
 }
-
-
-
 

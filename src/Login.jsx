@@ -3,7 +3,7 @@ import "./Login.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-function Login({ onBack }) {
+function Login({ onBack, onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -34,9 +34,15 @@ function Login({ onBack }) {
 
       setMessage("Login successful! Welcome to RoadWatch AI.");
 
-      // Keep the login token for this browser tab.
+      // Save token and user info for this browser tab.
       if (data.token) {
         sessionStorage.setItem("roadwatchToken", data.token);
+      }
+      if (data.user) {
+        sessionStorage.setItem("roadwatchUser", JSON.stringify(data.user));
+        if (onLoginSuccess) {
+          onLoginSuccess(data.user);
+        }
       }
     } catch (error) {
       setMessage(
